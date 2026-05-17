@@ -104,7 +104,10 @@ router.get(
   protect,
   authorize("judge", "organizer", "admin"),
   asyncHandler(async (req, res) => {
-    const submissions = await Submission.find({ hackathon: req.params.hackathonId, finalScore: { $ne: null } })
+    const submissions = await Submission.find({
+      hackathon: req.params.hackathonId,
+      finalScore: { $exists: true, $ne: null }
+    })
       .populate("team", "name")
       .sort({ finalScore: -1 });
     ok(
@@ -131,7 +134,10 @@ router.post(
       return res.status(403).json({ success: false, message: "Only organizer can publish results" });
     }
 
-    const submissions = await Submission.find({ hackathon: hackathon._id, finalScore: { $ne: null } })
+    const submissions = await Submission.find({
+      hackathon: hackathon._id,
+      finalScore: { $exists: true, $ne: null }
+    })
       .sort({ finalScore: -1 })
       .populate("team");
     await Promise.all(

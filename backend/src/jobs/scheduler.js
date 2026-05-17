@@ -12,14 +12,14 @@ async function updateHackathonStatuses() {
   await Promise.all(
     hackathons.map(async (hackathon) => {
       let nextStatus = hackathon.status;
-      if (now >= hackathon.registrationStart && now < hackathon.registrationEnd) {
-        nextStatus = "registration_open";
-      } else if (now >= hackathon.startDate && now < hackathon.endDate) {
-        nextStatus = "ongoing";
-      } else if (now >= hackathon.submissionDeadline && now < hackathon.endDate) {
-        nextStatus = "judging";
-      } else if (now >= hackathon.endDate) {
+      if (now >= hackathon.endDate) {
         nextStatus = "completed";
+      } else if (now >= hackathon.submissionDeadline) {
+        nextStatus = "judging";
+      } else if (now >= hackathon.startDate) {
+        nextStatus = "ongoing";
+      } else if (now >= hackathon.registrationStart && now < hackathon.registrationEnd) {
+        nextStatus = "registration_open";
       }
 
       if (nextStatus !== hackathon.status) {
