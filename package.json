@@ -1,0 +1,22 @@
+{
+  "name": "hackhub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered hackathon management system monorepo.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:backend dev:frontend dev:ai",
+    "dev:backend": "npm --workspace backend run dev",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "dev:ai": "uvicorn ai.main:app --reload --host 0.0.0.0 --port 8000",
+    "build": "npm --workspace frontend run build",
+    "start": "npm --workspace backend start",
+    "test": "npm --workspaces --if-present test"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
