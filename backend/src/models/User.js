@@ -56,13 +56,11 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ skills: 1 });
 
-userSchema.pre("save", async function hashPassword(next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function hashPassword() {
+  if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 12);
-  return next();
 });
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword) {

@@ -94,8 +94,8 @@ const hackathonSchema = new mongoose.Schema(
 hackathonSchema.index({ title: "text", description: "text" });
 hackathonSchema.index({ status: 1, startDate: 1 });
 
-hackathonSchema.pre("validate", async function assignSlug(next) {
-  if (!this.isModified("title") && this.slug) return next();
+hackathonSchema.pre("validate", async function assignSlug() {
+  if (!this.isModified("title") && this.slug) return;
   const baseSlug = slugify(this.title, { lower: true, strict: true });
   let slug = baseSlug;
   let counter = 1;
@@ -104,7 +104,6 @@ hackathonSchema.pre("validate", async function assignSlug(next) {
     counter += 1;
   }
   this.slug = slug;
-  next();
 });
 
 module.exports = mongoose.model("Hackathon", hackathonSchema);

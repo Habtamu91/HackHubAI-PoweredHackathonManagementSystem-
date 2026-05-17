@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "dev:memory": "node src/dev/startMemory.js",
     "start": "node src/server.js",
     "test": "node --test"
   },
@@ -29,6 +30,7 @@
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
+    "mongodb-memory-server": "^11.1.0",
     "nodemon": "^3.1.14"
   }
 }

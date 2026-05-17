@@ -53,6 +53,13 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
+function sanitizeMongoPayloads(req, res, next) {
+  // Express 5 exposes req.query as a getter, so sanitize only mutable payloads here.
+  if (req.body) req.body = mongoSanitize.sanitize(req.body);
+  if (req.params) req.params = mongoSanitize.sanitize(req.params);
+  next();
+}
+
 app.use(helmet());
 app.use(
   cors({
@@ -64,7 +71,7 @@ app.use(compression());
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(mongoSanitize());
+app.use(sanitizeMongoPayloads);
 app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 app.use(
   rateLimit({
