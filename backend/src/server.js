@@ -18,10 +18,11 @@ const { startScheduler } = require("./jobs/scheduler");
 
 const app = express();
 const server = http.createServer(app);
+const corsOrigin = env.nodeEnv === "production" ? env.frontendUrl : true;
 
 const io = new Server(server, {
   cors: {
-    origin: env.frontendUrl,
+    origin: corsOrigin,
     credentials: true
   }
 });
@@ -63,7 +64,7 @@ function sanitizeMongoPayloads(req, res, next) {
 app.use(helmet());
 app.use(
   cors({
-    origin: env.frontendUrl,
+    origin: corsOrigin,
     credentials: true
   })
 );
